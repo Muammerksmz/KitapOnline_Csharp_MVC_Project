@@ -1,0 +1,94 @@
+﻿<!-- Views/Home/Index.cshtml -->
+@model List<KitapOnline.Models.ViewModels.HomePageBookViewModel>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-image: url("/images/ArkaPlan.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .content-container {
+        background-color: rgba(255, 255, 255, 0.7);
+        padding: 20px;
+        margin-top: 50px;
+    }
+</style>
+
+<div class="content-container">
+    <h2>Kitap Listesi</h2>
+    <h1>
+        @if (ViewBag.user != null)
+        {
+            <h2>Hoşgeldiniz, @ViewBag.user !</h2>
+        }
+        else
+        {
+            <h3>Sistemden faydalanmak için giriş yapınız.</h3>
+        }
+    </h1>
+
+    <!-- Filtreleme formu -->
+    <form id="filterForm">
+        <div class="form-group">
+            <label for="genreFilter">Tür Filtrele:</label>
+            <select class="form-control" id="genreFilter" name="genreFilter">
+                <option value="">Tüm Türler</option>
+                @foreach (var genre in Model.Select(book => book.GenreName).Distinct())
+                {
+                    <option value="@genre">@genre</option>
+                }
+            </select>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="applyFilter()">Filtrele</button>
+    </form>
+
+    <div class="row" id="filteredBooks">
+        @foreach (var book in Model)
+        {
+            <div class="col-md-4 mb-4" data-genre="@book.GenreName">
+                <div class="card" style="background-color: #E9D6D1;">
+                    <img src="~/images/DefaultBook.png" class="card-img-top" alt="Kitap Resmi">
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Title</h5>
+                        <p class="card-text">Yazar: @book.AuthorName</p>
+                        <p class="card-text">Yayıncı: @book.PubhlisherName</p>
+                        <p class="card-text">Tür: @book.GenreName</p>
+                        @if (ViewBag.user != null)
+                        {
+                            <a onClick="buy()" class="btn btn-primary">Satın Al</a>
+                        }
+                        else
+                        {
+                            <a href="" class="btn btn-primary disabled">Satın Al</a>
+                            <span>Giriş yapınız.</span>
+                        }
+
+                        <script>
+                            function buy() {
+                                alert("Satın alma isteği gönderildi.");
+                            }
+                        </script>
+                        </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    function applyFilter() {
+        var selectedGenre = $("#genreFilter").val();
+
+        // Tüm kitapları göster
+        $(".card").parent().show();
+
+        // Seçilen türe göre filtrele
+        if (selectedGenre !== "") {
+            $(".card").parent().filter(":not([data-genre='" + selectedGenre + "'])").hide();
+        }
+    }
+</script>

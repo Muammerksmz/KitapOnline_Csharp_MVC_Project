@@ -1,0 +1,61 @@
+﻿@model IEnumerable<KitapOnline.Models.Domain.Book>
+@{
+}
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- DataTables CSS CDN -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- DataTables JS CDN -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+
+<div class="container pt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-dark" href="/Admin/Book/Add">Daha fazla ekle</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Eklenen Kitaplar</h3>
+
+            <table id="bookTable" class="table table-stripped table-bordered table-dark">
+                <thead>
+                    <tr>
+                        <th>Kitap adı</th>
+                        <th>Kitap türü</th>
+                        <th>Kitap adeti</th>
+                        <th>Kitap sayfası</th>
+                        <th>Kitap yazarı</th>
+                        <th>Kitap yayımcısı</th>
+                        <th>Seçenekler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Title</td>
+                            <td>@item.GenreName</td>
+                            <td>@item.Isbn</td>
+                            <td>@item.TotalPages</td>
+                            <td>@item.AuthorName</td>
+                            <td>@item.PublisherName</td>
+                            <td>
+                                <a class="btn btn-success" href="/Admin/Book/Update?id=@item.Id"><i class="bi bi-pen"></i> Düzenle</a> |
+                                <a class="btn btn-danger" onclick="return window.confirm('Emin misiniz?')" href="/Admin/Book/Delete?id=@item.Id"><i class="bi bi-trash"></i> Sil</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    let table = new DataTable('#bookTable');
+</script>
+

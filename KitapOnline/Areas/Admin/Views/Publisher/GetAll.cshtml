@@ -1,0 +1,41 @@
+﻿@model IEnumerable<KitapOnline.Models.Domain.Publisher>
+@{
+}
+
+<div class="container pt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <a class="btn btn-dark" href="/Admin/Publisher/Add">Daha fazla ekle</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Kitap yayımcıları</h3>
+
+            <table id="publisherTable" class="table table-stripped table-bordered table-dark">
+                <thead>
+                    <tr>
+                        <th>Yayımcı adı</th>
+                        <th>Seçenekler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.PublisherName</td>
+                            <td>
+                                <a class="btn btn-success" href="/Admin/Publisher/Update?id=@item.Id"><i class="bi bi-pen"></i> Düzenle</a> |
+                                <a class="btn btn-danger" onclick="return window.confirm('Emin misiniz?')" href="/Admin/Publisher/Delete?id=@item.Id"><i class="bi bi-trash"></i> Sil</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    let table = new DataTable("#publisherTable");
+</script>
